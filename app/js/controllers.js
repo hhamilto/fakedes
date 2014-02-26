@@ -43,9 +43,12 @@ angular.module('myApp.controllers', []).
 			$scope.SB1_out = lookup(newval.substring(0,4),$scope.SB1_text);
 			$scope.SB2_out = lookup(newval.substring(4),$scope.SB2_text);
 		});
-		$scope.$watch('SB1_out', function(newval){
-			$scope.R_1 = ('000000'+(parseInt(newval+$scope.SB2_out,2) ^ parseInt($scope.L_0,2)).toString(2)).substring(-6);
-		});
+		var caculateR_1 = function(SB1out,SB2out,L_0){
+			$scope.R_1 = ('000000'+(parseInt(SB1out+SB2out,2) ^ parseInt(L_0,2)).toString(2)).substring(-6);
+		};
+		$scope.$watch('SB1_out', function(newval){caculateR_1(newval,$scope.SB2_out,$scope.L_0)});
+		$scope.$watch('SB2_out', function(newval){caculateR_1($scope.SB1_out,newval,$scope.L_0)});
+		$scope.$watch('L_0', function(newval){caculateR_1($scope.SB1_out,$scope.SB2_out,newval)});
 	}])
 	.controller('MyCtrl2', [function() {
 
