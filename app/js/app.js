@@ -1,5 +1,10 @@
 'use strict';
-
+//un-fuck javascript:
+var oldss = String.prototype.substring;
+String.prototype.substring = function(a,b){
+	return oldss.call(this, a != undefined && a<0?a%this.length+this.length:a,
+							b != undefined && b<0?b%this.length+this.length:b)
+};
 
 // Declare app level module which depends on filters, and services
 angular.module('myApp', [
