@@ -30,20 +30,20 @@ angular.module('myApp.controllers', []).
 				return p+blankifNull(newval.split('')[Number(c)]);
 			},'');
 		});
-		$scope.$watch('R_0_expanded + K_1', function(newval){
+		var calculateR_0_xord = function(R_0,K_1){
 			console.log('gogog');
-			$scope.R_0_xord = ('00000000'+(parseInt(newval,2) ^ parseInt($scope.K_1,2)).toString(2)).substring(-8);
-		});
+			$scope.R_0_xord = ('00000000'+(parseInt(R_0,2) ^ parseInt(K_1,2)).toString(2)).substring(-8);
+		}
+		$scope.$watch('R_0_expanded', function(newval){calculateR_0_xord(newval,$scope.K_1)});
+		$scope.$watch('K_1', function(newval){calculateR_0_xord($scope.R_0_expanded, newval)});
 		$scope.$watch('R_0_xord', function(newval){
 			var lookup = function(key,sbox){
 				return sbox.match(/\d\d\d/g)[parseInt(key,2)];
 			};
 			$scope.SB1_out = lookup(newval.substring(0,4),$scope.SB1_text);
-			$scope.SB2_out = lookup(newval.substring(5),$scope.SB2_text);
+			$scope.SB2_out = lookup(newval.substring(4),$scope.SB2_text);
 		});
 		$scope.$watch('SB1_out', function(newval){
-			alert('sbox output: '+newval+$scope.SB2_out);
-			alert('l_0: '+$scope.L_0);
 			$scope.R_1 = ('000000'+(parseInt(newval+$scope.SB2_out,2) ^ parseInt($scope.L_0,2)).toString(2)).substring(-6);
 		});
 	}])
